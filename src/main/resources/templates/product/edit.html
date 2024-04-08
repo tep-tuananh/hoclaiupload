@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h2 class="text-center">Thêm mới sản phẩm </h2>
+                        </div>
+                        <form action="/edit" method="post" th:object="${product}"  enctype="multipart/form-data">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label>Name:</label>
+                                    <input  type="text" class="form-control" th:field="*{productName}"   />
+                                </div>
+                                <div class="form-group">
+                                    <label>Giá sản phẩm:</label>
+                                    <input  type="text" class="form-control" th:field="*{price}"  />
+                                </div>
+                                <div class="form-group">
+                                    <img th:src="@{|/uploads/${product.image}|}" width="150px" id="previewImage">
+                                    <input type="hidden" th:field="*{image}">
+                                </div>
+                                <div class="form-group">
+                                    <label>ảnh:</label>
+                                    <input  type="file" class="form-control" id="imageInput"  name="img"   th:field="*{image}" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Danh mục</label>
+                                    <select th:field="*{category.id}">
+                                        <option th:each="item : ${categoryList}" th:value="${item.id}" th:text="${item.categoryName}"></option>
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-primary active">
+                                        <input type="radio"  th:field="*{status}" id="" value="0"> Ẩn
+                                    </label>
+                                    <label class="btn btn-primary">
+                                        <input type="radio" th:field="*{status}"  value="1" checked="checked"> HIện
+                                    </label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            // Lắng nghe sự kiện khi người dùng chọn file
+            document.getElementById('imageInput').addEventListener('change', function(event) {
+                var file = event.target.files[0];
+                var reader = new FileReader();
+
+                // Đọc nội dung của file
+                reader.onload = function(e) {
+                    var imageUrl = e.target.result;
+
+                    // Gán URL của ảnh vào thuộc tính src của thẻ <img>
+                    document.getElementById('previewImage').src = imageUrl;
+                };
+
+                // Đọc file dưới dạng URL
+                reader.readAsDataURL(file);
+            });
+        </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+</body>
+</html>
