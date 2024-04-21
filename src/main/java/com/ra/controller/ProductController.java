@@ -4,6 +4,7 @@ import com.ra.models.entity.Category;
 import com.ra.models.entity.Product;
 import com.ra.service.CategoryService;
 import com.ra.service.product.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -70,17 +71,24 @@ public class ProductController {
 
 
     @PostMapping("/edit")
-    public String update(@ModelAttribute("product") Product product,
-                            @RequestParam("img") MultipartFile file){
-        String fileName = file.getOriginalFilename();
-        try {
-            FileCopyUtils.copy(file.getBytes(),new File(path+fileName));
-            // lưu tên file vào database
-            product.setImage(fileName);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public String update(@ModelAttribute("product")  Product product,
+                            @RequestParam("img") MultipartFile file) {
+        if (!file.isEmpty()) {
+            try {
+                String fileName = file.getOriginalFilename();
+                FileCopyUtils.copy(file.getBytes(), new File(path + fileName));
+                // lưu tên file vào database
+                product.setImage(fileName);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to save file: " + e.getMessage());
+            }
         }
-        productService.save(product);
-        return "redirect:/product";
+            productService.save(product);
+            return "redirect:/product";
+    }
+    @GetMapping("/delete/{id}")
+    public  String delete(@PathVariable ("id") Long id){
+        productService.delete(id);
+        return  "redirect:/product";
     }
 }

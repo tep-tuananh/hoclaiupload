@@ -42,7 +42,7 @@
                         </td>
                         <td>
                             <a class="btn btn-primary" th:href="@{/edit/{id}(id=${item.id})}" role="button">Edit</a>
-                            <a  class="btn btn-danger" href="#" role="button">Delete</a>
+                            <a  class="btn btn-danger" th:href="@{/delete/{id} (id= ${item.id})}" role="button">Delete</a>
                         </td>
                     </tr>
                     </tbody>
